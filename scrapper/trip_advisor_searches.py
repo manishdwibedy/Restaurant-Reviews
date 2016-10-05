@@ -1,9 +1,8 @@
 from urllib import urlopen
 from BeautifulSoup import BeautifulSoup
-from util import saveSoupToFile, saveToFile
+from util import saveSoupToFile
 from os.path import join
 from time import sleep
-import os
 
 class ScrapeTrip(object):
     def __init__(self):
