@@ -13,6 +13,7 @@ class ExtractReviewLinks(object):
             res_links = file.readlines()
 
         for link in res_links:
+            print 'working on ' + link
             link = self.baseURL + link
 
             webpage = urlopen(link).read().decode('utf-8')
@@ -29,7 +30,9 @@ class ExtractReviewLinks(object):
 
             saveSoupToFile(soup, join(directory_location, '1.txt'))
 
-            for pageIndex in range(5, 55):
+            pageIndex = 2
+            while True:
+
                 try:
                     links = soup.findAll('div', attrs={'class': 'pageNumbers'})[0]
                     page = links.findAll('a', attrs={'data-page-number': pageIndex})[0]
@@ -42,6 +45,7 @@ class ExtractReviewLinks(object):
                         webpage = urlopen(pageURL).read().decode('utf-8')
                         soup = BeautifulSoup(webpage)
                         saveSoupToFile(soup, join(directory_location, str(pageIndex) + '.txt'))
+                        pageIndex+=1
                 except:
                     print 'Completed index ' + str(pageIndex)
                     break
