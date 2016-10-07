@@ -1,5 +1,4 @@
 import connection
-import query
 
 def index(connection, collection, document):
     """
