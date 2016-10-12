@@ -1,5 +1,5 @@
 import connection
-from util import constant
+import constant
 
 def delete(connection, collection, query):
     """
@@ -35,5 +35,5 @@ def deleteSearches():
     delete(conn, constant.SEARCHES_COLLECTION,queryString)
 
 if __name__ == '__main__':
-    deleteAll()
+    deleteSearches()
 

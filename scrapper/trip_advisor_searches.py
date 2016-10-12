@@ -3,7 +3,7 @@ from BeautifulSoup import BeautifulSoup
 from util import saveSoupToFile
 from os.path import join
 from time import sleep
-from solr import connection, index
+from solr import connection, index, delete
 from solr import constant
 
 class ScrapeTrip(object):
@@ -23,33 +23,45 @@ class ScrapeTrip(object):
         self.searches = []
         self.searches.append(self.url)
 
-        for pageIndex in range(2, 50):
-            sleep(0.5)
+        pageIndex = 2
+        while True:
+            sleep(0.2)
             links = soup.findAll('div', attrs={'class': 'pageNumbers'})[0]
-            page = links.findAll('a', attrs={'data-page-number': pageIndex})[0]
+            page = links.findAll('a', attrs={'data-page-number': pageIndex})
 
-            for attr, value in page.attrs:
-                if attr == 'href':
-                    pageURL = self.baseURL + value
-                    break
-            if pageURL:
-                self.searches.append(pageURL)
-                webpage = urlopen(pageURL).read().decode('utf-8')
-                soup = BeautifulSoup(webpage)
-                if self.saveToFile:
-                    saveSoupToFile(soup, join(self.directory, str(pageIndex) + '.txt'))
+            if len(page) == 0:
+                print 'Ending..'
+                break
+            else:
+                page = page[0]
+                pageURL = page.attrMap['href']
+                pageURL = self.baseURL + pageURL
+
+                if pageURL:
+                    self.searches.append(pageURL)
+                    webpage = urlopen(pageURL).read().decode('utf-8')
+                    soup = BeautifulSoup(webpage)
+                    if self.saveToFile:
+                        saveSoupToFile(soup, join(self.directory, str(pageIndex) + '.txt'))
+
+                print 'Done with index : ' + str(pageIndex)
+            pageIndex += 1
         self.saveSearchResults()
 
     def saveSearchResults(self):
         documents = []
+        page_index = 1
         for link in self.searches:
             documents.append({
                 'site': 'Trip Advisor',
-                'url': link
+                'url': link,
+                'page_index': page_index
             })
+            page_index += 1
         index.index(connection=self.conn, collection=constant.SEARCHES_COLLECTION,document=documents)
 
 if __name__ == '__main__':
+    delete.deleteSearches()
     ScrapeTrip().getSearchResults()
 
 
