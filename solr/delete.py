@@ -15,18 +15,24 @@ def delete(connection, collection, query):
 def deleteAll():
     conn = connection.get_connection()
     queryString = 'id:*'
-    delete(conn, constant.RESTAURANTS_COLLECTION,queryString)
+    delete(conn, constant.SEARCHES_COLLECTION,queryString)
+    delete(conn, constant.REVIEWS_COLLECTION,queryString)
     delete(conn, constant.REVIEWS_COLLECTION,queryString)
 
 def deleteReviews():
     conn = connection.get_connection()
     queryString = 'id:*'
-    delete(conn, constant.RESTAURANTS_COLLECTION,queryString)
+    delete(conn, constant.REVIEWS_COLLECTION,queryString)
 
 def deleteRestaurants():
     conn = connection.get_connection()
     queryString = 'id:*'
     delete(conn, constant.RESTAURANTS_COLLECTION,queryString)
+
+def deleteSearches():
+    conn = connection.get_connection()
+    queryString = 'id:*'
+    delete(conn, constant.SEARCHES_COLLECTION,queryString)
 
 if __name__ == '__main__':
     deleteAll()

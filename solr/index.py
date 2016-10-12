@@ -1,3 +1,5 @@
+from solrcloudpy import SolrConnection
+
 import connection
 
 def index(connection, collection, document):
@@ -15,7 +17,4 @@ if __name__ == '__main__':
     connection = connection.get_connection()
     docs = [{"id":"1", "name":"a"},{"id":"2","name":"b"}]
 
-    index(connection, 'zomato_reviews',docs)
-    # op = query.get(connection, '*:*')
-    # print op
-
+    index(connection, 'RR_searches',docs)

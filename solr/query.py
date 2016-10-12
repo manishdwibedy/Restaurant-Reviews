@@ -27,6 +27,6 @@ def getCount(connection, collection, query):
 
 if __name__ == '__main__':
     solr = connection.get_connection()
-    print getCount(solr, 'zomato_reviews','*:*')
+    print getCount(solr, 'RR_searches','*:*')
 
 
