@@ -25,8 +25,12 @@ def getCount(connection, collection, query):
     docs = connection[collection].search({'q':query, 'rows': 0})
     return docs.result.response.numFound
 
+def getAll(connection, collection, query):
+    count = getCount(connection, collection, query)
+    return get(connection, collection, query, count)
+
 if __name__ == '__main__':
     solr = connection.get_connection()
-    print getCount(solr, 'RR_searches','*:*')
+    print getCount(solr, 'RR_restaurants','*:*')
 
 

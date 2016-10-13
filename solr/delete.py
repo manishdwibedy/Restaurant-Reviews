@@ -35,5 +35,5 @@ def deleteSearches():
     delete(conn, constant.SEARCHES_COLLECTION,queryString)
 
 if __name__ == '__main__':
-    deleteSearches()
+    deleteRestaurants()
 

@@ -1,5 +1,4 @@
-from solrcloudpy import SolrConnection
-
+import constant
 import connection
 
 def index(connection, collection, document):
@@ -17,4 +16,4 @@ if __name__ == '__main__':
     connection = connection.get_connection()
     docs = [{"id":"1", "name":"a"},{"id":"2","name":"b"}]
 
-    index(connection, 'RR_searches',docs)
+    index(connection, constant.RESTAURANTS_COLLECTION,docs)

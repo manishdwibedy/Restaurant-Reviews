@@ -3,6 +3,6 @@
 ## SOLR
 #######
 
-REVIEWS_COLLECTION = 'reviews'
-RESTAURANTS_COLLECTION = 'restaurants'
+REVIEWS_COLLECTION = 'RR_reviews'
+RESTAURANTS_COLLECTION = 'RR_restaurants'
 SEARCHES_COLLECTION = 'RR_searches'
