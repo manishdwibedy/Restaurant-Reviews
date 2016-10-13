@@ -45,15 +45,13 @@ class ExtractRestaurantLinks(object):
                 searchResultLinks.append(searchResult['url'][0])
 
         for link in searchResultLinks:
-            restaurant_link = self.extractRestaurantLink(link)
-            index.index(self.conn, constant.RESTAURANTS_COLLECTION, restaurant_link)
+            restaurant_data = self.extractRestaurantLink(link)
+            index.index(self.conn, constant.RESTAURANTS_COLLECTION, restaurant_data)
 
-            print 'Adding ' + str(len(restaurant_link)) + ' restaurants'
+            print 'Adding ' + str(len(restaurant_data)) + ' restaurants'
 
 
     def extractRestaurantLink(self, URL):
-        restaurant_data = []
-
         webpage = urlopen(URL).read().decode('utf-8')
         soup = BeautifulSoup(webpage)
 
@@ -64,13 +62,13 @@ class ExtractRestaurantLinks(object):
         for restaurant in results.findAll('div'):
             if 'listing' in restaurant.attrMap['class']:
 
-                #name
-                name = str(link.contents[0]).strip()
-
-                link = str(self.baseURL + link.attrMap['href'])
-
                 # Link to the restaurant
-                link = restaurant.findAll('a', attrs={'class': 'property_title'})[0]
+                linkAnchor = restaurant.findAll('a', attrs={'class': 'property_title'})[0]
+
+                #name
+                name = str(linkAnchor.contents[0]).strip()
+
+                link = str(self.baseURL + linkAnchor.attrMap['href'])
 
                 # Number of reviews
                 try:
@@ -117,5 +115,5 @@ class ExtractRestaurantLinks(object):
 
 
 if __name__ == '__main__':
-    #delete.deleteRestaurants()
+    # delete.deleteRestaurants()
     ExtractRestaurantLinks().extractLinks()
