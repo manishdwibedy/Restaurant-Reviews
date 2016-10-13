@@ -43,10 +43,11 @@ class ExtractRestaurantReviews(object):
             link = res_link
 
             count = query.getCount(self.conn, constant.REVIEWS_COLLECTION,'restaurant_name:'+name)
+            reviews = []
             if count == 0:
                 pageIndex = 2
                 while True:
-                    reviews = []
+
                     webpage = urlopen(link).read().decode('utf-8')
                     soup = BeautifulSoup(webpage)
 
@@ -77,8 +78,8 @@ class ExtractRestaurantReviews(object):
                                 'restaurant_link': res_link,
                                 'review_link': self.baseURL + str(review_link)
                             })
-                    index.index(self.conn, constant.REVIEWS_COLLECTION, reviews)
-                    print 'Added ' + str(len(reviews)) + ' reviews'
+
+
 
 
 
@@ -98,9 +99,9 @@ class ExtractRestaurantReviews(object):
                             link = pageURL
                             pageIndex+=1
                     except:
-                        print 'Completed index ' + str(pageIndex)
                         break
-                break
+                print 'Added ' + str(len(reviews)) + ' reviews'
+                index.index(self.conn, constant.REVIEWS_COLLECTION, reviews)
         pass
 
 
