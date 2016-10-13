@@ -44,9 +44,9 @@ class ExtractRestaurantLinks(object):
             if 'url' in searchResult:
                 searchResultLinks.append(searchResult['url'][0])
 
-        for link in searchResultLinks[6:]:
+        for link in searchResultLinks:
             restaurant_link = self.extractRestaurantLink(link)
-            index.index(self.conn, constant.REVIEWS_COLLECTION, restaurant_link)
+            index.index(self.conn, constant.RESTAURANTS_COLLECTION, restaurant_link)
 
             print 'Adding ' + str(len(restaurant_link)) + ' restaurants'
 
