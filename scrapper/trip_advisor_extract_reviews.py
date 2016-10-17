@@ -37,14 +37,15 @@ class ExtractRestaurantReviews(object):
         restaurants = restaurants.result.dict['response']['docs']
 
         for restaurant in restaurants:
-            name = str(restaurant['name'][0])
-            print "Restaurant : " + name
+            name = restaurant['name'][0].encode('ascii', 'ignore')
+
             res_link = restaurant['link'][0]
             link = res_link
 
             count = query.getCount(self.conn, constant.REVIEWS_COLLECTION,'restaurant_name:'+name)
             reviews = []
             if count == 0:
+                print "Adding reviews for restaurant : " + name
                 pageIndex = 2
                 while True:
 
@@ -102,6 +103,8 @@ class ExtractRestaurantReviews(object):
                         break
                 print 'Added ' + str(len(reviews)) + ' reviews'
                 index.index(self.conn, constant.REVIEWS_COLLECTION, reviews)
+            else:
+                print 'Have ' + str(count) + ' reviews for restaurant ' + name
         pass
 
 
