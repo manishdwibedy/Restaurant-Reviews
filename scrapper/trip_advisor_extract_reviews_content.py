@@ -62,6 +62,10 @@ class ExtractRestaurantReviewsContent(object):
 
             review_wrapper = soup.findAll('div', attrs={'class': 'innerBubble'})[0]
 
+            user_wrapper = soup.findAll('div', attrs={'class': 'col1of2'})[0]
+            user_info = user_wrapper.findAll('span', attrs={'class': 'badgeText'})[0]
+            user_reviews = str(user_info.contents[0]).strip()
+
             review_title = review_wrapper.findAll('div', attrs={'class': 'quote'})[0]
             if review_title:
                 review_title = str(review_title.contents[0]).strip()
