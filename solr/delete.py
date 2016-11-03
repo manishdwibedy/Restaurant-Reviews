@@ -35,5 +35,6 @@ def deleteSearches():
     delete(conn, constant.SEARCHES_COLLECTION,queryString)
 
 if __name__ == '__main__':
-    deleteRestaurants()
+    # deleteRestaurants()
+    delete(connection.get_connection(), constant.RESTAURANTS_COLLECTION, 'id:2')
 
