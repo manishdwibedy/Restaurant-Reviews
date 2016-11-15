@@ -9,7 +9,7 @@ class ExtractRestaurantReviews(object):
         self.directory = join('raw_data', 'trip_restaurant')
         self.conn = connection.get_connection()
 
-    def extractAddressPhone(self):
+    def extractMenu(self):
         resLinks = []
 
         restaurants = query.getAll(self.conn, constant.RESTAURANTS_COLLECTION, '*:*')
@@ -25,52 +25,24 @@ class ExtractRestaurantReviews(object):
             webpage = urlopen(res_link).read().decode('utf-8')
             soup = BeautifulSoup(webpage)
 
-            street = soup.findAll('span', attrs={'class': 'street-address'})[0].contents[0]
-            address = soup.findAll('span', attrs={'property': 'addressLocality'})[0].contents[0]
-            region = soup.findAll('span', attrs={'property': 'addressRegion'})[0].contents[0]
-            postal = soup.findAll('span', attrs={'property': 'postalCode'})[0].contents[0]
-            telephone = soup.findAll('div', attrs={'class': 'fl phoneNumber'})
 
-            if len(telephone) == 1:
-                restaurant['contact'] = str(telephone[0].contents[0]).strip()
+            menuWrapper = soup.findAll('div', attrs={'class': 'menuItemLHS'})
+
+            if len(menuWrapper) > 0:
+                menuList = []
+                for menu in menuWrapper:
+                    menuTitle = menu.findAll('div', attrs={'class': 'menuItemTitle'})
+                    menuList.append(str(menuTitle[0].contents[0]).strip())
+                restaurant["menu"] = menuList
             else:
-                restaurant['contact'] = 'N.A.'
-            full_address = ''#str(street + ', ' + address + ', ' + region + ' ')
-
-            try:
-                street += ', '
-            except:
-                street = ''
-            full_address += street
-
-            try:
-                address += ', '
-            except:
-                address = ''
-            full_address += address
-
-            try:
-                region += ' '
-            except:
-                region = ''
-            full_address += region
-
-            try:
-                postal += ''
-            except:
-                postal = ''
-            full_address += postal
-
-            restaurant['address'] = full_address.strip()
+                restaurant["menu"] = "N.A."
 
 
-
-
-            update.updateUnique(self.conn, constant.RESTAURANTS_COLLECTION, restaurant)
+            # update.updateUnique(self.conn, constant.RESTAURANTS_COLLECTION, restaurant)
         pass
 
 
 
 if __name__ == '__main__':
     # delete.deleteReviews()
-    ExtractRestaurantReviews().extractAddressPhone()
+    ExtractRestaurantReviews().extractMenu()
