@@ -1,4 +1,4 @@
-import connection
+import connection, constant, json
 
 def get(connection, collection, query, rows = -1):
     """
@@ -31,6 +31,11 @@ def getAll(connection, collection, query):
 
 if __name__ == '__main__':
     solr = connection.get_connection()
-    print getCount(solr, 'RR_restaurants','*:*')
+    response = getAll(solr, constant.RESTAURANTS_COLLECTION,'contact:[* TO *]')
+    docs = response.result.response.docs
+    print docs
+    with open('data.txt', 'w') as outfile:
+        json.dump(docs, outfile)
+    # json.dumps()
 
 
