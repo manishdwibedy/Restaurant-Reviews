@@ -12,7 +12,7 @@ class ExtractRestaurantReviews(object):
     def extractAddressPhone(self):
         resLinks = []
 
-        restaurants = query.getAll(self.conn, constant.RESTAURANTS_COLLECTION, '*:*')
+        restaurants = query.getAll(self.conn, constant.RESTAURANTS_COLLECTION, '-contact:["" TO *]')
 
         restaurants = restaurants.result.dict['response']['docs']
 
